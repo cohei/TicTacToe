@@ -28,11 +28,11 @@ initialGameState = GameState emptyBoard O
 game :: (MonadState GameState m) => Player m -> Player m -> m ()
 game p1 p2 = do
   board <- gets board
-  pos <- p1 board
+  piece <- gets active
+  pos <- p1 piece board
   if not $ canPlace pos board
     then game p1 p2
     else do
-      piece <- gets active
       let board' = updateBoard pos piece board
       modify $ \s -> GameState { board = board', active = change piece }
       if isFull board' || isWon board'
