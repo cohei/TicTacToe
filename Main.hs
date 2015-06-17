@@ -1,4 +1,5 @@
 {-# LANGUAGE FlexibleContexts #-}
+{-# LANGUAGE MultiWayIf #-}
 {-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE GADTs #-}
 module Main where
@@ -25,7 +26,7 @@ initialGameState = GameState emptyBoard O
 -- type Winner = Piece
 -- game :: (MonadState GameState m) => Player m -> Player m -> m Winner
 -- game :: (MonadState GameState m, MonadWriter [Board] m) => Player m -> Player m -> m Winner
-game :: (MonadState GameState m) => Player m -> Player m -> m ()
+game :: (MonadIO m, MonadState GameState m) => Player m -> Player m -> m ()
 game p1 p2 = do
   board <- gets board
   piece <- gets active
@@ -35,6 +36,7 @@ game p1 p2 = do
     else do
       let board' = updateBoard pos piece board
       modify $ \s -> GameState { board = board', active = change piece }
-      if isFull board' || isWon board'
-        then return ()
-        else game p2 p1
+      if
+        | isWon board'  -> liftIO $ putStrLn $ show piece ++ " won!"
+        | isFull board' -> liftIO $ putStrLn "Draw."
+        | otherwise     -> game p2 p1
