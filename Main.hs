@@ -20,7 +20,7 @@ main = evalStateT (game human ai) initialGameState
 data GameState = GameState { board :: Board, active :: Piece }
 
 initialGameState :: GameState
-initialGameState = GameState emptyBoard X
+initialGameState = GameState emptyBoard O
 
 -- type Winner = Piece
 -- game :: (MonadState GameState m) => Player m -> Player m -> m Winner
