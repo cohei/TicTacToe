@@ -29,6 +29,7 @@ initialGameState = GameState emptyBoard O
 game :: (MonadIO m, MonadState GameState m) => Player m -> Player m -> m ()
 game p1 p2 = do
   board <- gets board
+  liftIO $ putStr $ showBoard board
   piece <- gets active
   pos <- p1 piece board
   if not $ canPlace pos board
@@ -36,7 +37,8 @@ game p1 p2 = do
     else do
       let board' = updateBoard pos piece board
       modify $ \s -> GameState { board = board', active = change piece }
+      let printResult message = liftIO $ putStr (showBoard board') >> putStrLn message
       if
-        | isWon board'  -> liftIO $ putStrLn $ show piece ++ " won!"
-        | isFull board' -> liftIO $ putStrLn "Draw."
+        | isWon board'  -> printResult $ show piece ++ " won!"
+        | isFull board' -> printResult "Draw."
         | otherwise     -> game p2 p1

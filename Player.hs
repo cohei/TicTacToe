@@ -1,5 +1,6 @@
 module Player where
 
+import Control.Concurrent (threadDelay)
 import Control.Monad.Random
 import Control.Monad.State
 import System.IO (hFlush, stdout)
@@ -10,14 +11,15 @@ type Player m = Piece -> Board -> m Position
 
 human :: MonadIO m => Player m
 human piece board = liftIO $ do
-  putStr $ showBoard board
   putStrLn $ "Your turn: " ++ show piece
   putStr "Input hand: "
   hFlush stdout  -- force `putStr` before `readLn`
   readLn
 
-randomAI :: MonadRandom m => Player m
-randomAI _piece _board = getRandomR (1,9)
+randomAI :: (MonadIO m, MonadRandom m) => Player m
+randomAI _piece _board = do
+  liftIO $ threadDelay 1000000
+  getRandomR (1,9)
 
 serialAI :: Monad m => Player m
 serialAI _piece board = evalStateT serialAI' (cycle [1..9])
