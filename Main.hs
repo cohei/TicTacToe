@@ -11,7 +11,10 @@ import Board
 import Player
 
 main :: IO ()
-main = evalStateT (game human ai) initialGameState
+main = do
+  (board, result) <- evalStateT (game human ai) initialGameState
+  let printResult message = putStr (showBoard board) >> putStrLn message
+  printResult $ maybe "Draw." (\piece -> show piece ++ " won!") result
   where
     -- ai = serialAI
     ai = randomAI
@@ -23,10 +26,8 @@ data GameState = GameState { board :: Board, active :: Piece }
 initialGameState :: GameState
 initialGameState = GameState emptyBoard O
 
--- type Winner = Piece
--- game :: (MonadState GameState m) => Player m -> Player m -> m Winner
--- game :: (MonadState GameState m, MonadWriter [Board] m) => Player m -> Player m -> m Winner
-game :: (MonadIO m, MonadState GameState m) => Player m -> Player m -> m ()
+-- game :: (MonadState GameState m, MonadWriter [Board] m) => Player m -> Player m -> m ()
+game :: (MonadIO m, MonadState GameState m) => Player m -> Player m -> m (Board, Maybe Piece)
 game p1 p2 = do
   board <- gets board
   liftIO $ putStr $ showBoard board
@@ -37,8 +38,7 @@ game p1 p2 = do
     else do
       let board' = updateBoard pos piece board
       modify $ \s -> GameState { board = board', active = change piece }
-      let printResult message = liftIO $ putStr (showBoard board') >> putStrLn message
       if
-        | isWon board'  -> printResult $ show piece ++ " won!"
-        | isFull board' -> printResult "Draw."
+        | isWon board'  -> return (board', Just piece)
+        | isFull board' -> return (board', Nothing)
         | otherwise     -> game p2 p1
