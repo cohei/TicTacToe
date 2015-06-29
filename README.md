@@ -3,11 +3,12 @@ Tic Tac Toe AI
 
 ## To run
 
-`stack` is a build tool for Haskell.
-First, [install stack](https://github.com/commercialhaskell/stack/wiki/Downloads).
-Then you can run this as below.
+1. [Install `stack`](https://github.com/commercialhaskell/stack/wiki/Downloads). `stack` is a build tool for Haskell.
+2. Download this repository.
+3. Then you can run this as below.
 
 ```shellscript
+$ cd TicTacToe/
 $ stack init
 $ stack build
 $ stack exec ttt
