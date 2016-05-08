@@ -9,7 +9,6 @@ Tic Tac Toe AI
 
 ```shellscript
 $ cd TicTacToe/
-$ stack init
 $ stack build
 $ stack exec ttt
 ```
