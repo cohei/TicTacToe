@@ -7,7 +7,7 @@ module Board
   , showBoard
   , updateBoard
   , canPlace
-  , change
+  , flipPiece
   , isFull
   ) where
 
@@ -17,9 +17,9 @@ import Data.List.Split (chunksOf)
 
 data Piece = X | O deriving (Eq, Show, Ord)
 
-change :: Piece -> Piece
-change X = O
-change O = X
+flipPiece :: Piece -> Piece
+flipPiece X = O
+flipPiece O = X
 
 {-
  1 | 2 | 3
