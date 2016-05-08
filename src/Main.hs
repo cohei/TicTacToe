@@ -13,13 +13,16 @@ import Player
 main :: IO ()
 main = do
   (board, result) <- evalStateT (game human ai) initialGameState
-  let printResult message = putStr (showBoard board) >> putStrLn message
-  printResult $ maybe "Draw." (\piece -> show piece ++ " won!") result
+  printResult board result
   where
     -- ai = serialAI
     ai = randomAI
     -- ai = human
 
+printResult :: Board -> Maybe Piece -> IO ()
+printResult board result = do
+  putStr $ showBoard board
+  putStrLn $ maybe "Draw." ((++ " won!") . show) result
 
 data GameState = GameState { board :: Board, active :: Piece }
 
