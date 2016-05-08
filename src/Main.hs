@@ -37,7 +37,7 @@ game p1 p2 = do
     then game p1 p2
     else do
       let board' = updateBoard pos piece board
-      modify $ \s -> GameState { board = board', active = change piece }
+      modify $ const GameState { board = board', active = change piece }
       if
         | isWon board'  -> return (board', Just piece)
         | isFull board' -> return (board', Nothing)
