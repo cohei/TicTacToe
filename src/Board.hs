@@ -11,11 +11,11 @@ module Board
   , isFull
   ) where
 
-import Data.Maybe (isJust)
 import Data.List (intercalate, intersperse, transpose)
 import Data.List.Split (chunksOf)
+import Data.Maybe (isJust)
 
-data Piece = X | O deriving (Eq, Show, Ord)
+data Piece = X | O deriving (Eq, Show, Read, Ord)
 
 flipPiece :: Piece -> Piece
 flipPiece X = O
