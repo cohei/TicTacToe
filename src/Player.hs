@@ -36,6 +36,7 @@ serialAI _piece board = evalStateT serialAI' (cycle [1..9])
         else serialAI'
 
 -- たぶん一番古い同一局面の手を出す
+-- 次は集計した結果を利用して手を考える
 recordAI :: (MonadIO m, MonadRandom m, MonadReader [Record] m) => Player m
 recordAI currentPiece currentBoard = do
   records <- ask
