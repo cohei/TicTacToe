@@ -58,12 +58,12 @@ executable ttt
   -- other-extensions:
 
   -- Other library packages from which modules are imported.
-  build-depends:       MonadRandom >= 0.3.0.2
-                     , base >=4.8 && <4.9
-                     , directory >= 1.2.6.0
-                     , mtl >= 2.2.1
-                     , split >= 0.2.2
-                     , time >= 1.5.0.1
+  build-depends:       MonadRandom
+                     , base >=4.9 && <5
+                     , directory
+                     , mtl
+                     , split
+                     , time
 
   -- Directories containing source files.
   hs-source-dirs:      src
